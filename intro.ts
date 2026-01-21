@@ -142,10 +142,17 @@ console.log(move); // This prints LEFT
 // Enums are used to define a set of named constants, making the code more readable and maintainable by using meaningful names instead of arbitrary values. 
 // They also provide type safety by restricting the values to the defined enum members. 
 // Enums are particularly useful when you have a fixed set of related values that you want to group together and refer to by name.
-// Difference between enums and type aliases and interfaces is that enums define a set of named constants, 
-// type aliases create custom types that can represent primitive types, union types, tuples, or object types, 
-// and interfaces define the structure of object types. Enums are used for fixed sets of related values, 
-// type aliases for reusable custom types, and interfaces for defining object shapes and contracts.
+
+// Difference between enums, type aliases, interfaces, and classes:
+// -->enums define a set of named constants, 
+// -->type aliases create custom types that can represent primitive types, union types, tuples, or object types, 
+// -->interfaces define the structure of object types and can be implemented by classes,
+// -->classes are blueprints for creating objects with properties and methods. 
+// When to use which depends on the specific use case:
+// -->Enums are used for fixed sets of related values, 
+// -->type aliases for reusable custom types,
+// -->interfaces for defining object shapes and contracts and 
+// -->classes for creating objects with similar properties and behaviors.
 
 // Parameters destructuring in TS
 // This is a type alias for a Product object
@@ -164,5 +171,60 @@ displayProduct(prod); // This prints Product ID: 101, Product Name: Laptop, Pric
 // making the code more concise and readable by avoiding repetitive access to object properties within the function body. 
 // It also helps in clearly defining which properties are expected by the function.
 
+// Modules in TS
+// Modules are used to create a collection of multiple data types, functions, classes, etc., in a single file and export them to be used in other files.
+// They have their own scope and help in organizing code better. 
+// namespace is used to group related functionalities together. We can't use module keyword in TS anymore.
+namespace MathUtils { 
+    export function add(a: number, b: number): number {
+        return a + b;
+    }
 
+    export function subtract(a: number, b: number): number {
+        return a - b;
+    }
+}
 
+console.log(MathUtils.add(5, 3)); // This prints 8
+console.log(MathUtils.subtract(5, 3)); // This prints 2 
+
+// ts.config.json is used to configure the TS compiler options like target version, module system, strict type checking, etc.
+// It helps in customizing the compilation process according to the project requirements. It also makes the working directory as the root directory for the TS project.
+
+// Decorators in TS
+// Decorators are special types of declarations that can be attached to classes, methods, properties, or parameters to modify their behavior.
+// They are prefixed with @ symbol and are used for meta-programming. Decorators can be used for logging, validation, authorization, etc.
+
+// Example of a class decorator
+function Logger(constructor: any) { // constructor is the class being decorated. 
+// In plain English its like "whenever a class is created, pass its constructor function as an argument to the Logger decorator."
+    console.log("Class created: " + constructor.name); 
+    // constructor.name gives the name of the class being decorated which is PersonClass in this case.
+}
+
+@Logger
+class PersonClass {
+    constructor(public name: string, public age: number) {} // Here we are passing constructor function as an argument to the Logger decorator. 
+    // The arguements name and age are public properties of the PersonClass. The public keyword automatically creates and initializes the properties in the class.
+}
+
+const personInstance = new PersonClass("Suman", 24); // This prints Class created: PersonClass. We are creating an instance of PersonClass here.
+console.log(personInstance); // This prints PersonClass { name: 'Suman', age: 24 }
+// Here, the Logger decorator is applied to the PersonClass, and it logs a message when the class is created.
+
+// --outfile is a TS compiler option that allows you to specify a single output file for all the compiled JavaScript code from multiple TS files.
+// It is useful when you want to bundle all the code into a single file for easier deployment or distribution.
+// Example: tsc --outfile output.js file1.ts file2.ts --> This will compile file1.ts and file2.ts into a single output.js file.
+
+//Conditional types in TS
+// Conditional types allow you to define types based on a condition. They are defined using the syntax T extends U ? X : Y, where T is the type being checked, 
+// In plain English its like "If type T is assignable to type U, then the result is X, else the result is Y.""
+// U is the type to check against, X is the type if the condition is true, and Y is the type if the condition is false.
+// Example: We are checking if a type T is a string or not using conditional types. 
+type IsString<T> = T extends string ? "Yes" : "No"; //In IsString<T> the <T> syntax indicates that IsString is a generic type that takes a type parameter T.
+type B = "hello" extends string ? true : false; // B is true because "hello" is a string
+type C = 123 extends string ? true : false; // C is false because 123 is not a string
+
+//Condtional type checking does not happend at runtime, its a compile time check.
+
+// All the best for your TypeScript journey!

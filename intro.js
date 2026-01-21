@@ -1,5 +1,43 @@
 // Declaring variables in TS
 // using var, let, const
+var __esDecorate = (this && this.__esDecorate) || function (ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
+    function accept(f) { if (f !== void 0 && typeof f !== "function") throw new TypeError("Function expected"); return f; }
+    var kind = contextIn.kind, key = kind === "getter" ? "get" : kind === "setter" ? "set" : "value";
+    var target = !descriptorIn && ctor ? contextIn["static"] ? ctor : ctor.prototype : null;
+    var descriptor = descriptorIn || (target ? Object.getOwnPropertyDescriptor(target, contextIn.name) : {});
+    var _, done = false;
+    for (var i = decorators.length - 1; i >= 0; i--) {
+        var context = {};
+        for (var p in contextIn) context[p] = p === "access" ? {} : contextIn[p];
+        for (var p in contextIn.access) context.access[p] = contextIn.access[p];
+        context.addInitializer = function (f) { if (done) throw new TypeError("Cannot add initializers after decoration has completed"); extraInitializers.push(accept(f || null)); };
+        var result = (0, decorators[i])(kind === "accessor" ? { get: descriptor.get, set: descriptor.set } : descriptor[key], context);
+        if (kind === "accessor") {
+            if (result === void 0) continue;
+            if (result === null || typeof result !== "object") throw new TypeError("Object expected");
+            if (_ = accept(result.get)) descriptor.get = _;
+            if (_ = accept(result.set)) descriptor.set = _;
+            if (_ = accept(result.init)) initializers.unshift(_);
+        }
+        else if (_ = accept(result)) {
+            if (kind === "field") initializers.unshift(_);
+            else descriptor[key] = _;
+        }
+    }
+    if (target) Object.defineProperty(target, contextIn.name, descriptor);
+    done = true;
+};
+var __runInitializers = (this && this.__runInitializers) || function (thisArg, initializers, value) {
+    var useValue = arguments.length > 2;
+    for (var i = 0; i < initializers.length; i++) {
+        value = useValue ? initializers[i].call(thisArg, value) : initializers[i].call(thisArg);
+    }
+    return useValue ? value : void 0;
+};
+var __setFunctionName = (this && this.__setFunctionName) || function (f, name, prefix) {
+    if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
+    return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
+};
 var num = 5;
 num = 10; // now num is 10
 var text = 'Hi Suman';
@@ -105,3 +143,57 @@ displayProduct(prod); // This prints Product ID: 101, Product Name: Laptop, Pric
 // Parameter destructuring allows you to extract properties from an object directly in the function parameters, 
 // making the code more concise and readable by avoiding repetitive access to object properties within the function body. 
 // It also helps in clearly defining which properties are expected by the function.
+// Modules in TS
+// Modules are used to create a collection of multiple data types, functions, classes, etc., in a single file and export them to be used in other files.
+// They have their own scope and help in organizing code better. 
+// namespace is used to group related functionalities together. We can't use module keyword in TS anymore.
+var MathUtils;
+(function (MathUtils) {
+    function add(a, b) {
+        return a + b;
+    }
+    MathUtils.add = add;
+    function subtract(a, b) {
+        return a - b;
+    }
+    MathUtils.subtract = subtract;
+})(MathUtils || (MathUtils = {}));
+console.log(MathUtils.add(5, 3)); // This prints 8
+console.log(MathUtils.subtract(5, 3)); // This prints 2 
+// ts.config.json is used to configure the TS compiler options like target version, module system, strict type checking, etc.
+// It helps in customizing the compilation process according to the project requirements. It also makes the working directory as the root directory for the TS project.
+// Decorators in TS
+// Decorators are special types of declarations that can be attached to classes, methods, properties, or parameters to modify their behavior.
+// They are prefixed with @ symbol and are used for meta-programming. Decorators can be used for logging, validation, authorization, etc.
+// Example of a class decorator
+function Logger(constructor) {
+    // We can also pass specific class types instead of Function type.
+    console.log("Class created: " + constructor.name);
+    // constructor.name gives the name of the class being decorated which is PersonClass in this case.
+}
+var PersonClass = function () {
+    var _classDecorators = [Logger];
+    var _classDescriptor;
+    var _classExtraInitializers = [];
+    var _classThis;
+    var PersonClass = _classThis = /** @class */ (function () {
+        function PersonClass_1(name, age) {
+            this.name = name;
+            this.age = age;
+        } // Here we are passing constructor function as an argument to the Logger decorator. 
+        return PersonClass_1;
+    }());
+    __setFunctionName(_classThis, "PersonClass");
+    (function () {
+        var _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
+        __esDecorate(null, _classDescriptor = { value: _classThis }, _classDecorators, { kind: "class", name: _classThis.name, metadata: _metadata }, null, _classExtraInitializers);
+        PersonClass = _classThis = _classDescriptor.value;
+        if (_metadata) Object.defineProperty(_classThis, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });
+        __runInitializers(_classThis, _classExtraInitializers);
+    })();
+    return PersonClass = _classThis;
+}();
+var personInstance = new PersonClass("Suman", 24); // This prints Class created: PersonClass. We are creating an instance of PersonClass here.
+console.log(personInstance); // This prints PersonClass { name: 'Suman', age: 24 }
+//Condtional type checking does not happend at runtime, its a compile time check.
+// All the best for your TypeScript journey!

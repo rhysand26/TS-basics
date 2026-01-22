@@ -225,6 +225,6 @@ type IsString<T> = T extends string ? "Yes" : "No"; //In IsString<T> the <T> syn
 type B = "hello" extends string ? true : false; // B is true because "hello" is a string
 type C = 123 extends string ? true : false; // C is false because 123 is not a string
 
-//Condtional type checking does not happend at runtime, its a compile time check.
+//Condtional type checking does not happen at runtime, its a compile time check.
 
 // All the best for your TypeScript journey!
